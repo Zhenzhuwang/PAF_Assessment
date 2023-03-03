@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Funds Transfer</title>
+</head>
+<body>
+    <h1>Funds Transfer</h1>
+    <form action="/transfer" method="post" th-data-object="${transfer}">
+        <div>
+            <label for="fromAccount">From Account:</label>
+            <select id="fromAccount" name="fromAccount" th-data-field="*{fromAccount}">
+                <option value="">-- Select From Account --</option>
+                <th-data-block th-data-each="account : ${accounts}">
+                    <option th-data-value="${account.accountId}" th-data-text="${account.name} + ' (' + ${account.accountId} + ')'"></option>
+                </th-data-block>
+            </select>
+            <span th-data-if="${#fields.hasErrors('fromAccount')}" th-data-errors="*{fromAccount}"></span>
+        </div>
+        <div>
+            <label for="toAccount">To Account:</label>
+            <select id="toAccount" name="toAccount" th-data-field="*{toAccount}">
+                <option value="">-- Select To Account --</option>
+                <th-data-block th-data-each="account : ${accounts}">
+                    <option th-data-value="${account.accountId}" th-data-text="${account.name} + ' (' + ${account.accountId} + ')'"></option>
+                </th-data-block>
+            </select>
+            <span th-data-if="${#fields.hasErrors('toAccount')}" th-data-errors="*{toAccount}"></span>
+        </div>
+        <div>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" min="0.01" step="0.01" th-data-field="*{amount}" />
+            <span th-data-field="${#fields.hasErrors('amount')}" th-data-errors="*{amount}"></span>
+        </div>
+        <div>
+            <label for="comments">Comments:</label>
+            <textarea id="comments" name="comments" th-data-field="*{comments}"></textarea>
+        </div>
+        <div>
+            <form method="POST" action="/transfer">
+            <button type="submit">Transfer</button>
+        </form>
+        </div>
+        <div th-data-if="${flashMessage != null}">
+            <p style="color: red;" th-data-text="${flashMessage}"></p>
+        </div>
+    </form>
+</body>
+</html>
